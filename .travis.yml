@@ -48,7 +48,7 @@ before_script:
   - THIS_SHA_LONG=$(git log -1 | head -1 | awk '{print $2}')
   - THIS_SHA_SHORT=$(git rev-parse --short HEAD)
 
-  - IMAGE_SHA_SHORT="$DOCKER_USERNAME"/"$DOCKER_REPO_NAME":"$GHOST_VERSION"-"$THIS_SHA_SHORT-follow-release"
+  - IMAGE_SHA_SHORT="$DOCKER_USERNAME"/"$DOCKER_REPO_NAME":"$GHOST_VERSION_DOCKERFILE"-"$THIS_SHA_SHORT-follow-release"
   - IMAGE_EDGE="$DOCKER_USERNAME"/"$DOCKER_REPO_NAME":edge
 
 script:
