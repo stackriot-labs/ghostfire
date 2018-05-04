@@ -9,7 +9,7 @@ set -o nounset
 
 
 # --- CONFIGS
-VERSION="1.22.4F-c872c93"
+VERSION="edge"
     # FIND THE MOST RECENT VERSION HERE: https://hub.docker.com/r/devmtl/ghostfire/tags/
 DOCKER_REPO="devmtl/ghostfire"
 CTN_NAME="ghostUAT"
