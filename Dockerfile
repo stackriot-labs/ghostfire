@@ -1,65 +1,99 @@
-# Author: Pascal Andy - https://pascalandy.com/blog/now/
-# Forked from https://github.com/docker-library/ghost/blob/2f6ac6c7770e428a4a50d23d46ec470d5e727456/1/alpine/Dockerfile
 # https://docs.ghost.org/supported-node-versions/
 # https://github.com/nodejs/LTS
 #
-# Update Ghost version on line: 13
-# Update Ghost-CLI on line: 15
+# Update Ghost version on lines: 14 and 63
+# Update Node version on lines: 12 and 60
 
-# $SUB_VERSION is used tag docker images within CI Travis
+# Based on https://github.com/mmornati/docker-ghostblog
+
+### ### ### ### ### ### ### ### ###
+# Builder layer
+
+FROM node:8.11.1-alpine as ghost-builder
+
+ENV GHOST_VERSION="1.22.3"                  \
+    GHOST_INSTALL="/var/lib/ghost"          \
+    GHOST_CONTENT="/var/lib/ghost/content"  \
+    GHOST_USER="node"                                           
+
+# Set default directory
+WORKDIR $GHOST_INSTALL
+
+#Install required packages
+RUN set -eux                            && \
+    apk update && apk add python make   && \
+    chown node:node "$GHOST_INSTALL"     
+
+USER $GHOST_USER
+
+# Change base folder for the NPM installs (dtrace_provider is somehow failing because of this)
+RUN mkdir /home/node/.npm-global
+ENV PATH=/home/node/.npm-global/bin:$PATH
+ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
+
+# We use SQLite as our DB. Force install "sqlite3" manually since it's an optional dependency of "ghost"
+RUN npm install --loglevel=error -g ghost-cli   && \
+    echo "--- INSTALLING GHOST ${GHOST_VERSION} INTO ${GHOST_INSTALL} FOLDER ---" && \
+    ghost install "$GHOST_VERSION"                 \
+        --db sqlite3 --no-prompt                   \
+        --no-stack --no-setup                      \
+        --dir "$GHOST_INSTALL"                  && \
+    echo "---  CONFIGURING GHOST  ---"          && \
+    ghost config --ip 0.0.0.0                      \
+        --port 2368 --no-prompt --db sqlite3       \
+        --url http://localhost:2368                \
+        --dbpath "$GHOST_CONTENT/data/ghost.db" && \
+    ghost config paths.contentPath "$GHOST_CONTENT"
+
+# Copy entrypoint script
+COPY --chown=node run-ghost.sh $GHOST_INSTALL
+
+RUN set -eux                                    && \
+    chmod +x "$GHOST_INSTALL/run-ghost.sh"      && \
+    echo "--- CREATING CONTENT TEMPLATE  ---"   && \
+    cp -r "$GHOST_CONTENT" "$GHOST_INSTALL/content.bck"         
+
+
+### ### ### ### ### ### ### ### ###
+# Final image
 
 FROM node:8.11.1-alpine
+LABEL maintainer="Marco Mornati <marco@mornati.net>"
 
-ENV GHOST_VERSION="1.22.5"                      \
-    GHOST_CLI_VERSION="1.7.2"                   \
-    GHOST_INSTALL="/var/lib/ghost"              \
-    GHOST_CONTENT="/var/lib/ghost/content"      \
+ENV GHOST_VERSION="1.22.3"                   \
+    GHOST_INSTALL="/var/lib/ghost"           \
+    GHOST_CONTENT="/var/lib/ghost/content"   \
+    GHOST_USER="node"                        \
+    HOME="$GHOST_INSTALL"                    \
+    TZ="Etc/UTC"                             \
     NODE_ENV="production"
 
-RUN set -ex                                                     && \
-    apk add --update --no-cache                                    \
-    'su-exec>=0.2' bash tini                                    && \
-    rm -rf /var/cache/apk/*;
+RUN set -eux                              && \
+    apk update                            && \
+    apk add --no-cache tzdata             && \
+    rm -rf /var/cache/apk/*
 
-RUN set -ex                                                     && \
-    npm install --production -g "ghost-cli@$GHOST_CLI_VERSION"  && \
-    \
-    mkdir -p "$GHOST_INSTALL";                                     \
-    chown node:node "$GHOST_INSTALL";                              \
-    \
 # Install Ghost
-    su-exec node ghost install "$GHOST_VERSION" --db sqlite3 --no-prompt --no-stack --no-setup --dir "$GHOST_INSTALL"; \
-    \
-# Tell Ghost to listen on all ips and not prompt for additional configuration
-    cd "$GHOST_INSTALL"; \
-    su-exec node ghost config --ip 0.0.0.0 --port 2368 --no-prompt --db sqlite3 --url http://localhost:2368 --dbpath "$GHOST_CONTENT/data/ghost.db"; \
-    su-exec node ghost config paths.contentPath "$GHOST_CONTENT"; \
-    \
-# make a config.json symlink for NODE_ENV=development (and sanity check that it's correct)
-    su-exec node ln -s config.production.json "$GHOST_INSTALL/config.development.json"; \
-    readlink -f "$GHOST_INSTALL/config.development.json"; \
-    \
-# need to save initial content for pre-seeding empty volumes
-    mv "$GHOST_CONTENT" "$GHOST_INSTALL/content.orig"; \
-    mkdir -p "$GHOST_CONTENT"; \
-    chown node:node "$GHOST_CONTENT"; \
-    \
-# sanity check to ensure knex-migrator was installed
-    "$GHOST_INSTALL/current/node_modules/knex-migrator/bin/knex-migrator" --version \
-# uninstall ghost-cli
-    su-exec node npm uninstall -S -D -O -g "ghost-cli@$GHOST_CLI_VERSION";
+COPY --from=ghost-builder --chown=node:node $GHOST_INSTALL $GHOST_INSTALL
 
-# add knex-migrator bins into PATH
-# we want these from the context of Ghost's "node_modules" directory (instead of doing "npm install -g knex-migrator") so they can share the DB driver modules
-ENV PATH $PATH:$GHOST_INSTALL/current/node_modules/knex-migrator/bin
+USER $GHOST_USER
 
-# TODO multiarch sqlite3 (once either "node:6-alpine" has multiarch or we switch to a base that does)
+ENV PATH="${GHOST_INSTALL}/current/node_modules/knex-migrator/bin:${PATH}"
 
+# Define working directory
 WORKDIR $GHOST_INSTALL
-VOLUME $GHOST_CONTENT
 
-COPY docker-entrypoint.sh /usr/local/bin
-ENTRYPOINT [ "/sbin/tini", "--", "docker-entrypoint.sh" ]
-
+# Expose ports
 EXPOSE 2368
-CMD ["node", "current/index.js"]
+
+# HealthCheck
+HEALTHCHECK CMD wget -q -s http://localhost:2368 || exit 1
+
+# Define mountable directories
+VOLUME [ "${GHOST_CONTENT}", "${GHOST_INSTALL}/config.override.json", "/etc/timezone" ]
+
+# Define Entry Point to manage the Init and the upgrade
+ENTRYPOINT [ "./run-ghost.sh" ]
+
+# Define default command
+CMD [ "node", "current/index.js" ]

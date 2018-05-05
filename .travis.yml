@@ -46,8 +46,8 @@ before_script:
   - THIS_DATE=$(date -u +"%Y%m%d_%HH%M_%S")
   - THIS_SHA_SHORT=$(git rev-parse --short HEAD)
 
-  - IMAGE_SHA_SHORT="$DOCKER_USERNAME"/"$DOCKER_REPO_NAME":"$GHOST_VERSION"-edge-"$THIS_SHA_SHORT"
-  - IMAGE_VERSION="$DOCKER_USERNAME"/"$DOCKER_REPO_NAME":edge
+  - IMAGE_SHA_SHORT="$DOCKER_USERNAME"/"$DOCKER_REPO_NAME":"$GHOST_VERSION"-multistage-"$THIS_SHA_SHORT"
+  - IMAGE_VERSION="$DOCKER_USERNAME"/"$DOCKER_REPO_NAME":multistage
 
 script:
   - uname -a;
