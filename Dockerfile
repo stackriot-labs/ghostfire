@@ -1,17 +1,15 @@
 # https://docs.ghost.org/supported-node-versions/
 # https://github.com/nodejs/LTS
 #
-# Update Ghost version on lines: 14 and 63
-# Update Node version on lines: 12 and 60
-
-# Based on https://github.com/mmornati/docker-ghostblog
+# Update Ghost version on lines: 12 and 61
+# Update Node version on lines: 10 and 58
 
 ### ### ### ### ### ### ### ### ###
 # Builder layer
 
 FROM node:8.11.1-alpine as ghost-builder
 
-ENV GHOST_VERSION="1.22.3"                  \
+ENV GHOST_VERSION="1.22.5"                  \
     GHOST_INSTALL="/var/lib/ghost"          \
     GHOST_CONTENT="/var/lib/ghost/content"  \
     GHOST_USER="node"                                           
@@ -60,7 +58,7 @@ RUN set -eux                                    && \
 FROM node:8.11.1-alpine
 LABEL maintainer="Marco Mornati <marco@mornati.net>"
 
-ENV GHOST_VERSION="1.22.3"                   \
+ENV GHOST_VERSION="1.22.5"                   \
     GHOST_INSTALL="/var/lib/ghost"           \
     GHOST_CONTENT="/var/lib/ghost/content"   \
     GHOST_USER="node"                        \
@@ -68,9 +66,10 @@ ENV GHOST_VERSION="1.22.3"                   \
     TZ="Etc/UTC"                             \
     NODE_ENV="production"
 
-RUN set -eux                              && \
-    apk update                            && \
-    apk add --no-cache tzdata             && \
+RUN set -eux                                    && \
+    apk update                                  && \
+    apk add --no-cache tzdata ca-certificates   && \
+    update-ca-certificates                      && \
     rm -rf /var/cache/apk/*
 
 # Install Ghost
