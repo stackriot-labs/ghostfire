@@ -18,7 +18,7 @@ ENV GHOST_VERSION="1.23.0"                      \
 
 RUN set -ex                                                     && \
     apk add --update --no-cache                                 \
-    'su-exec>=0.2' bash wget tini ca-certificates               && \
+    'su-exec>=0.2' bash curl tini ca-certificates               && \
     update-ca-certificates                                      && \
     rm -rf /var/cache/apk/*;
 
