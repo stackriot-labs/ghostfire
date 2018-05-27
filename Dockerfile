@@ -18,7 +18,7 @@ ENV GHOST_VERSION="1.23.0"                      \
 
 RUN set -ex                                                     && \
     apk add --update --no-cache                                    \
-    'su-exec>=0.2' bash tini                                    && \
+    'su-exec>=0.2' bash wget tini                               && \
     rm -rf /var/cache/apk/*;
 
 RUN set -ex                                                     && \
