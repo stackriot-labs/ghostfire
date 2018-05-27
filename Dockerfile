@@ -17,15 +17,16 @@ ENV GHOST_VERSION="1.23.0"                      \
     NODE_ENV="production"
 
 RUN set -ex                                                     && \
-    apk add --update --no-cache                                    \
-    'su-exec>=0.2' bash wget tini                               && \
+    apk add --update --no-cache                                 \
+    'su-exec>=0.2' bash wget tini ca-certificates               && \
+    update-ca-certificates                                      && \
     rm -rf /var/cache/apk/*;
 
 RUN set -ex                                                     && \
     npm install --production -g "ghost-cli@$GHOST_CLI_VERSION"  && \
     \
-    mkdir -p "$GHOST_INSTALL";                                     \
-    chown node:node "$GHOST_INSTALL";                              \
+    mkdir -p "$GHOST_INSTALL";                                  \
+    chown node:node "$GHOST_INSTALL";                           \
     \
 # Install Ghost
     su-exec node ghost install "$GHOST_VERSION" --db sqlite3 --no-prompt --no-stack --no-setup --dir "$GHOST_INSTALL"; \
