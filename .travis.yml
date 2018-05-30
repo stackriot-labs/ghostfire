@@ -7,7 +7,10 @@ services:
 branches:
   except:
     - tmp99
-  
+
+notifications:
+    webhooks: https://www.travisbuddy.com/
+    
 # Secret DOCKER_PASSWORD managed by Travis:
 # See https://docs.travis-ci.com/user/environment-variables/#Defining-Variables-in-Repository-Settings
 #
