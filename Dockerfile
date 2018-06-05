@@ -6,8 +6,6 @@
 # Update Ghost version on line: 13
 # Update Ghost-CLI on line: 15
 
-# $SUB_VERSION is used tag docker images within CI Travis
-
 FROM node:8.11.2-alpine
 
 ENV GHOST_VERSION="1.23.1"                      \
