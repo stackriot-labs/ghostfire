@@ -10,7 +10,7 @@
 
 FROM node:8.11.2-alpine
 
-ENV GHOST_VERSION="1.23.0"                      \
+ENV GHOST_VERSION="1.23.1"                      \
     GHOST_CLI_VERSION="1.8.0"                   \
     GHOST_INSTALL="/var/lib/ghost"              \
     GHOST_CONTENT="/var/lib/ghost/content"      \
