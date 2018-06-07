@@ -3,13 +3,13 @@
 # https://docs.ghost.org/supported-node-versions/
 # https://github.com/nodejs/LTS
 #
-# Update Ghost version on line: 13
-# Update Ghost-CLI on line: 15
+# Update Ghost version on line: 11
+# Update Ghost-CLI on line: 12
 
 FROM node:8.11.2-alpine
 
-ENV GHOST_VERSION="1.23.1"                      \
-    GHOST_CLI_VERSION="1.8.0"                   \
+ENV GHOST_VERSION="1.24.0"                      \
+    GHOST_CLI_VERSION="1.8.1"                   \
     GHOST_INSTALL="/var/lib/ghost"              \
     GHOST_CONTENT="/var/lib/ghost/content"      \
     NODE_ENV="production"
