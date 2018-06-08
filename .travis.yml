@@ -8,6 +8,12 @@ branches:
   except:
     - tmp99
 
+env:
+  matrix:
+    - ARCH=arm
+    - ARCH=arm64
+    - ARCH=amd64
+
 notifications:
     webhooks: https://www.travisbuddy.com/
     
