@@ -1,15 +1,11 @@
-# Author: Pascal Andy - https://pascalandy.com/blog/now/
-# Forked from https://github.com/docker-library/ghost/blob/2f6ac6c7770e428a4a50d23d46ec470d5e727456/1/alpine/Dockerfile
-# https://docs.ghost.org/supported-node-versions/
-# https://github.com/nodejs/LTS
-#
-# Update Ghost version on line: 11
-# Update Ghost-CLI on line: 12
+# Update Ghost version & Ghost-CLI on line: 7 & 8
 
 FROM node:8.11.2-alpine
 
-ENV GHOST_VERSION="1.22.8"                      \
-    GHOST_CLI_VERSION="1.7.3"                   \
+LABEL maintainer="Pascal Andy <pascalandy.com/blog/now/>"
+
+ENV GHOST_VERSION="1.24.1"                      \
+    GHOST_CLI_VERSION="1.8.1"                   \
     GHOST_INSTALL="/var/lib/ghost"              \
     GHOST_CONTENT="/var/lib/ghost/content"      \
     NODE_ENV="production"
@@ -63,8 +59,10 @@ ENTRYPOINT [ "/sbin/tini", "--", "docker-entrypoint.sh" ]
 
 EXPOSE 2368
 
-#check every 5s to ensure this service returns HTTP 200
-#HEALTHCHECK --interval=5s --timeout=3s --start-period=10s --retries=3 \ 
-#    CMD curl -fs http://localhost:2368 || exit 1
+# Healthcheck setting are made during docker service create (...)
 
 CMD ["node", "current/index.js"]
+
+# Forked from https://github.com/docker-library/ghost/blob/2f6ac6c7770e428a4a50d23d46ec470d5e727456/1/alpine/Dockerfile
+# https://docs.ghost.org/supported-node-versions/
+# https://github.com/nodejs/LTS
