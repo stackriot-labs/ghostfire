@@ -63,8 +63,8 @@ ENTRYPOINT [ "/sbin/tini", "--", "docker-entrypoint.sh" ]
 
 EXPOSE 2368
 
-# check every 5s to ensure this service returns HTTP 200
-HEALTHCHECK --interval=5s --timeout=3s --start-period=10s --retries=3 \ 
-    CMD curl -fs http://localhost:2368 || exit 1
+#check every 5s to ensure this service returns HTTP 200
+#HEALTHCHECK --interval=5s --timeout=3s --start-period=10s --retries=3 \ 
+#    CMD curl -fs http://localhost:2368 || exit 1
 
 CMD ["node", "current/index.js"]
