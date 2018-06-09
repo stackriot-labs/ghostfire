@@ -64,5 +64,5 @@ EXPOSE 2368
 CMD ["node", "current/index.js"]
 
 # Forked from https://github.com/docker-library/ghost/blob/2f6ac6c7770e428a4a50d23d46ec470d5e727456/1/alpine/Dockerfile
-# https://docs.ghost.org/supported-node-versions/
+# https://docs.ghost.org/v1/docs/supported-node-versions
 # https://github.com/nodejs/LTS
