@@ -4,7 +4,7 @@ FROM node:8.11.3-alpine
 
 LABEL maintainer="Pascal Andy <pascalandy.com/blog/now/>"
 
-ENV GHOST_VERSION="1.24.4"                      \
+ENV GHOST_VERSION="1.24.5"                      \
     GHOST_CLI_VERSION="1.8.1"                   \
     GHOST_INSTALL="/var/lib/ghost"              \
     GHOST_CONTENT="/var/lib/ghost/content"      \
