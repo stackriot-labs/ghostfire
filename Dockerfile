@@ -5,7 +5,10 @@
 #
 # VAR TO UPDATE -> see lines: 8, 12, 13
 
-FROM node:8.11.4-alpine
+# Little hack as Node 8 still use alpine:3.6
+FROM node:8.11.4-alpine as nodeofficial
+FROM alpine:3.8
+COPY --from=nodeofficial /usr/local /usr/local
 
 LABEL maintainer="Pascal Andy | pascalandy.com/blog/now/"
 
