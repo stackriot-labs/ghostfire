@@ -20,7 +20,7 @@ ENV GHOST_VERSION="2.0.2"                       \
 
 RUN set -ex                                                     && \
     # Upgrade to alpine:3.6 to 3.8
-    apk --update && apk upgrade --available                     && \
+    apk update && apk upgrade --available                       && \
     # Continue normally from here
     apk add --no-cache 'su-exec>=0.2'                           \
         bash curl tini ca-certificates                          && \
