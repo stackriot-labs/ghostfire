@@ -5,10 +5,10 @@
 #
 # VAR TO UPDATE -> see lines: 8, 12, 13
 
-# Little hack as Node 8 still use alpine:3.6
-FROM node:8.11.4-alpine as nodeofficial
-FROM alpine:3.8
-COPY --from=nodeofficial /usr/local /usr/local
+FROM node:8.11.4-alpine
+
+# Little hack as Node 8 is still using alpine:3.6
+COPY --from=alpine:3.8 /etc/apk/repositories /etc/apk/repositories
 
 LABEL maintainer="Pascal Andy | pascalandy.com/blog/now/"
 
@@ -19,8 +19,11 @@ ENV GHOST_VERSION="2.0.2"                       \
     NODE_ENV="production"
 
 RUN set -ex                                                     && \
-    apk add --update --no-cache                                 \
-    'su-exec>=0.2' bash curl tini ca-certificates               && \
+    # Upgrade to alpine:3.6 to 3.8
+    apk --update && apk upgrade --available                     && \
+    # Continue normally from here
+    apk add --no-cache 'su-exec>=0.2'                           \
+        bash curl tini ca-certificates                          && \
     update-ca-certificates                                      && \
     rm -rf /var/cache/apk/*;
 
