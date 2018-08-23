@@ -5,7 +5,9 @@
 #
 # VAR TO UPDATE -> see lines: 8, 12, 13
 
-FROM node:8.11.4-alpine
+FROM node:8.11.4-alpine as node
+FROM alpine:3.8
+COPY --from=node --chown=node:node /usr/local /usr/local
 
 LABEL maintainer="Pascal Andy | pascalandy.com/blog/now/"
 
