@@ -5,7 +5,7 @@
 #
 # VAR TO UPDATE -> see lines: 8, 12, 13
 
-FROM node:8.11.4-alpine
+FROM devmtl/node-alpine:8.11.4
 
 LABEL maintainer="Pascal Andy | pascalandy.com/blog/now/"
 
