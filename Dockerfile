@@ -10,8 +10,8 @@ FROM node:8.11.4-alpine as node
 
 FROM alpine:3.8
 
-COPY --from=node /usr/local /usr/local
-COPY --from=node /opt /opt
+COPY --from=node /usr/local/ /usr/local/
+COPY --from=node /opt/ /opt/
 
 LABEL maintainer="Pascal Andy | pascalandy.com/blog/now/"
 
