@@ -5,7 +5,13 @@
 #
 # VAR TO UPDATE -> see lines: 8, 12, 13
 
-FROM devmtl/node-alpine:8.11.4
+#FROM devmtl/node-alpine:8.11.4
+FROM node:8.11.4-alpine as node
+
+FROM alpine:3.8
+
+COPY --from=node /usr/local /usr/local
+COPY --from=node /opt /opt
 
 LABEL maintainer="Pascal Andy | pascalandy.com/blog/now/"
 
@@ -16,7 +22,7 @@ ENV GHOST_VERSION="2.0.3"                       \
     NODE_ENV="production"
 
 RUN set -ex                                                     && \
-    apk add --update --no-cache 'su-exec>=0.2'                     \
+    apk --update --no-cache add 'su-exec>=0.2'                     \
         bash curl tini ca-certificates                          && \
     update-ca-certificates                                      && \
     rm -rf /var/cache/apk/*;
