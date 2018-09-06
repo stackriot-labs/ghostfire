@@ -27,8 +27,8 @@ RUN set -ex                                                     && \
     mkdir -p "$GHOST_INSTALL";                                  \
     chown node:node "$GHOST_INSTALL";                           \
     \
-# Install Ghost
-    su-exec node ghost install --verbose "$GHOST_VERSION" --db sqlite3 --no-prompt --no-stack --no-setup --dir "$GHOST_INSTALL"; \
+# Install Ghost / optional: --verbose
+    su-exec node ghost install "$GHOST_VERSION" --db sqlite3 --no-prompt --no-stack --no-setup --dir "$GHOST_INSTALL"; \
     \
 # Tell Ghost to listen on all ips and not prompt for additional configuration
     cd "$GHOST_INSTALL"; \
