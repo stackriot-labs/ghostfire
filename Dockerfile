@@ -1,12 +1,11 @@
 # Author: Pascal Andy | pascalandy.com/blog/now/
 # Forked from https://github.com/docker-library/ghost/blob/2f6ac6c7770e428a4a50d23d46ec470d5e727456/1/alpine/Dockerfile
 # https://docs.ghost.org/supported-node-versions/
-# https://github.com/nodejs/LTS
+# https://github.com/nodejs/LTS | FROM node:8.12.0-alpine
 #
 # VAR TO UPDATE -> see lines: 8, 12, 13
 
-#FROM devmtl/node-alpine:8.11.4
-FROM node:8.12.0-alpine
+FROM devmtl/node-alpine:8.11.4
 
 LABEL maintainer="Pascal Andy | pascalandy.com/blog/now"
 
