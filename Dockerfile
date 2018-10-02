@@ -5,12 +5,13 @@
 #
 # VAR TO UPDATE -> see lines: 8, 12, 13
 
-FROM devmtl/node-alpine:8.11.4
+#FROM devmtl/node-alpine:8.11.4
+FROM node:8.12.0-alpine
 
-LABEL maintainer="Pascal Andy | pascalandy.com/blog/now/"
+LABEL maintainer="Pascal Andy | pascalandy.com/blog/now"
 
 ENV GHOST_VERSION="2.1.4"                       \
-    GHOST_CLI_VERSION="1.9.4"                   \
+    GHOST_CLI_VERSION="1.9.5"                   \
     GHOST_INSTALL="/var/lib/ghost"              \
     GHOST_CONTENT="/var/lib/ghost/content"      \
     NODE_ENV="production"
