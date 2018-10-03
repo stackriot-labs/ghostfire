@@ -9,8 +9,8 @@ FROM devmtl/node-alpine:8.11.4
 
 LABEL maintainer="Pascal Andy | pascalandy.com/blog/now"
 
-ENV GHOST_VERSION="2.1.4"                       \
-    GHOST_CLI_VERSION="1.9.5"                   \
+ENV GHOST_VERSION="2.2.0"                       \
+    GHOST_CLI_VERSION="1.9.6"                   \
     GHOST_INSTALL="/var/lib/ghost"              \
     GHOST_CONTENT="/var/lib/ghost/content"      \
     NODE_ENV="production"
