@@ -32,9 +32,9 @@ In short, you can try Ghost on the spot without having to sign-up!
 
 ## How to use this image
 
-To run Ghost in a Docker container, here is the setup we use in production. Just execute `runup.sh` bash script and you are good to go. This setup also allows you to run your blog under a subdirectory like `mysite.com/blog`.
+**Requirement**: Ensure you have Docker installed on your machine.
 
-Ensure you have Docker installed on your server. To update your Ghost container, just stop the container and execute to runup.sh again.
+To run Ghost in a Docker container, here is the setup we use in production. Just execute `runup.sh` bash script and you are good to go. This setup also allows you to run your blog under a subdirectory like `mysite.com/blog`.
 
 **Option #1** *(prefered)*:
 - Run the script: `./runup.sh`
@@ -68,12 +68,8 @@ ${GHOSTFIRE_IMG}
 
 ### Find the most recent docker image 🐳
 
-Instead of using edge use the **stable image**.
-
 - **Docker hub** — https://hub.docker.com/r/devmtl/ghostfire/tags/
 - **Travis** — https://travis-ci.org/firepress-org/ghostfire
-
-As an example:
 
 ### master branch (stable) tags looks like:
 
@@ -86,11 +82,11 @@ IMAGE_FULL=devmtl/ghostfire:2.8.0-fa4877b-20181211_15H4408
 
 I recommend to follow the tag $IMAGE_VERSION
 
-### edge branch tags looks like:
+### edge branch (not stable) tags looks like:
 
 ```
-IMAGE_SHA_SHORT=devmtl/ghostfire:2.9.0-edge-f44b15e
-IMAGE_DATE=devmtl/ghostfire:2.9.0-edge-20181217_18H5249
+IMAGE_SHA_SHORT=devmtl/ghostfire:2.9.0-edge-c545f37
+IMAGE_DATE=devmtl/ghostfire:2.9.0-edge-20181218_15H2357
 IMAGE_VERSION=devmtl/ghostfire:2.9.0-edge
 IMAGE_EDGE=devmtl/ghostfire:edge
 ```
@@ -98,21 +94,33 @@ IMAGE_EDGE=devmtl/ghostfire:edge
 
 ### edge vs. master branches
 
-⚠️ Warning - we don’t merge edge into master! Those two branches are like two independant project.
+⚠️ Workflow warning — we don’t merge `edge` into `master`. Think of it as independant projects.
 
-Because we run a lot of websites in production using this image, we prefer to do my UAT (tests) using a dedicated `edge` branch.
+Why? Let’s understand our process.
 
-Once we confirm the edge build is a PASS, we update the Dockerfile in the `master` branch as well. At this point, I’m reaaaaaally confident the docker image is working correctly.
+Because we run a lot of websites in production using this image, we prefer to do my UAT (tests) using a dedicated `edge` branch. **In other words, it’s a manual checkpoint in order to avoid a crash at scale.**
 
-![ghostfire-screen-2018-07-12_21h46](https://user-images.githubusercontent.com/6694151/42668147-195cfb74-861d-11e8-9d61-d847da6147f9.jpg)
+It also have the advantage to keep a clean commit history in the  master branch (without doing git-fu all the time).
 
-
-## Developing Ghost theme, my setup
-
-I open sourced [my setup here](https://github.com/firepress-org/ghost-local-dev-in-docker). It’s a workflow to run Ghost locally within a Docker container. Once your local paths are define it’s really fun and easy to work between many themes.
+Once we confirm the edge build is a PASS, we update the Dockerfile in the `master` branch as well. At this point, we are perfectly confident the docker image is working correctly.
 
 
-## Various
+## Why forking the official Dockerfile?
+
+I tweaked few elements like:
+
+- Ghost container is running under [tini](https://github.com/krallin/tini#why-tini)
+- A cleaner ENV VAR management
+- Uninstall the `ghost cli` to safe few bytes in the docker image
+- In the future, the image will support multi-stage build
+
+
+## Developing Ghost themes locally
+
+I open sourced [my setup here](https://github.com/firepress-org/ghost-local-dev-in-docker). It’s a workflow to run Ghost locally within a Docker container. Once your local paths are define it’s really fun and easy to work **between many themes**.
+
+
+## Various stuff
 
 **Breaking change**
 
@@ -133,16 +141,6 @@ docker exec <container-id> node --version
 ```
 
 You can also see this information in the Dockerfile and in the Travis builds.
-
-
-## Why forking the official Dockerfile?
-
-I tweaked few elements like:
-
-- Ghost container is running under [tini](https://github.com/krallin/tini#why-tini)
-- A cleaner ENV VAR management
-- Uninstall the `ghost cli` to safe few bytes in the docker image
-- In the future, the image will support multi-stage build
 
 
 ## Contributing
