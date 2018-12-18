@@ -9,7 +9,7 @@
 
 ## What is this
 
-It’s a Docker image for running Ghost V2 in a container. We don’t support V1 anymore. 
+It’s a Docker image to run Ghost V2 in a container. We don’t support V1 anymore. 
 
 **What is Ghost?** — Ghost is an open source software that lets you create your website with a blog. See the [FAQ section](https://play-with-ghost.com/ghost-themes/faq/#what-is-ghost) for more details.
 
@@ -23,6 +23,7 @@ In short, you can try Ghost on the spot without having to sign-up!
 [![play-with-ghost-splash](![pwg-video-preview-c](https://user-images.githubusercontent.com/6694151/50163926-75c6b580-02af-11e9-9e99-534200047cc7.jpg)](https://play-with-ghost.com/)
 
 <br>
+
 #### Video explainer
 
 [![pwg-video-preview-b](https://user-images.githubusercontent.com/6694151/50162583-bc66e080-02ac-11e9-937f-741f6d388d40.jpg)](https://play-with-ghost.com/#video)
