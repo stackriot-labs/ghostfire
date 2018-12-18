@@ -13,7 +13,7 @@
     <a href="https://twitter.com/askpascalandy">Twitter</a>
     <br /> <br />
     <a href="https://travis-ci.org/firepress-org/ghostfire">
-        <img src="https://travis-ci.com/firepress-org/ghostfire.svg?branch=master" alt="version" />
+        <img src="https://images.microbadger.com/badges/version/devmtl/ghostfire.svg" alt="version" />
     </a>
     <a href="https://hub.docker.com/r/devmtl/ghostfire">
         <img src="https://images.microbadger.com/badges/image/devmtl/ghostfire.svg" alt="Downloads" />
