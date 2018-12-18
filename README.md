@@ -12,9 +12,7 @@
     <a href="https://github.com/firepress-org/">GitHub</a> |
     <a href="https://twitter.com/askpascalandy">Twitter</a>
     <br /> <br />
-    [![Build Status](https://travis-ci.com/firepress-org/ghostfire.svg?branch=master)](https://travis-ci.com/username/projectname)
-
-        <a href="https://travis-ci.org/firepress-org/ghostfire">
+    <a href="https://travis-ci.org/firepress-org/ghostfire">
         <img src="https://travis-ci.com/firepress-org/ghostfire.svg?branch=master" alt="version" />
     </a>
     <a href="https://hub.docker.com/r/devmtl/ghostfire">
