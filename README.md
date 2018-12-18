@@ -20,7 +20,9 @@ It’s a Docker image to run Ghost V2 in a container. We don’t support V1 anym
 
 In short, you can try Ghost on the spot without having to sign-up!
 
-[![play-with-ghost-splash](![pwg-video-preview-c](https://user-images.githubusercontent.com/6694151/50163926-75c6b580-02af-11e9-9e99-534200047cc7.jpg)](https://play-with-ghost.com/)
+<br>
+
+[![pwg-video-preview-c](https://user-images.githubusercontent.com/6694151/50163926-75c6b580-02af-11e9-9e99-534200047cc7.jpg)](https://play-with-ghost.com/)
 
 <br>
 
