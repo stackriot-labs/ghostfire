@@ -20,10 +20,10 @@ It’s a Docker image for running Ghost V2 in a container. We don’t support V1
 
 In short, you can try Ghost on the spot without having to sign-up!
 
-[![play-with-ghost-splash](https://user-images.githubusercontent.com/6694151/50162402-419dc580-02ac-11e9-92b7-f75f8f2c08e1.jpg)](https://play-with-ghost.com/)
+[![play-with-ghost-splash](![pwg-video-preview-c](https://user-images.githubusercontent.com/6694151/50163926-75c6b580-02af-11e9-9e99-534200047cc7.jpg))](https://play-with-ghost.com/)
 
-
-#### A little video that show you what you can do
+<br>
+#### Video explainer
 
 [![pwg-video-preview-b](https://user-images.githubusercontent.com/6694151/50162583-bc66e080-02ac-11e9-937f-741f6d388d40.jpg)](https://play-with-ghost.com/#video)
 
