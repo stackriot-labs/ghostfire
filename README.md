@@ -32,7 +32,7 @@ In short, you can try Ghost on the spot without having to sign-up!
 
 ## How to use this image
 
-To run Ghost in a Docker container, here is the setup I use in production. Just execute `runup.sh` bash script and you are good to go. This setup also allows you to run your blog under a subdirectory like `mysite.com/blog`.
+To run Ghost in a Docker container, here is the setup we use in production. Just execute `runup.sh` bash script and you are good to go. This setup also allows you to run your blog under a subdirectory like `mysite.com/blog`.
 
 Ensure you have Docker installed on your server. To update your Ghost container, just stop the container and execute to runup.sh again.
 
@@ -98,11 +98,11 @@ IMAGE_EDGE=devmtl/ghostfire:edge
 
 ### edge vs. master branches
 
-⚠️ Warning - I don’t merge edge into master! Those two branches are like two independant project.
+⚠️ Warning - we don’t merge edge into master! Those two branches are like two independant project.
 
-Because I run a lot of websites in production using this image, I prefer to do my UAT (tests) using a dedicated `edge` branch.
+Because we run a lot of websites in production using this image, we prefer to do my UAT (tests) using a dedicated `edge` branch.
 
-Once I confirm the edge build PASS, I update the Dockerfile in the `master` branch as well. At this point, I’m reaaaaaally confident the docker image is working correctly.
+Once we confirm the edge build is a PASS, we update the Dockerfile in the `master` branch as well. At this point, I’m reaaaaaally confident the docker image is working correctly.
 
 ![ghostfire-screen-2018-07-12_21h46](https://user-images.githubusercontent.com/6694151/42668147-195cfb74-861d-11e8-9d61-d847da6147f9.jpg)
 
