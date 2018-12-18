@@ -9,18 +9,23 @@
 
 ## What is this
 
-It’s a Docker image for running Ghost in a container.
+It’s a Docker image for running Ghost V2 in a container. We don’t support V1 anymore. 
 
 **What is Ghost?** — Ghost is an open source software that lets you create your website with a blog. See the [FAQ section](https://play-with-ghost.com/ghost-themes/faq/#what-is-ghost) for more details.
 
 
 ##  Live Demo (online)
 
-Head over to [play-with-ghost.com](https://play-with-ghost.com/) . It’s is a playground to learn about Ghost. You can see Ghost themes and login into the **admin panel** by using the available credentials. In short, you can try Ghost on the spot without having to sign-up!
+[play-with-ghost.com](https://play-with-ghost.com/) is a playground to learn about Ghost. Of course you can see Ghost themes. The biggest attraction here is having the ability to log in the **admin panel** by using the available credentials.
 
-And since August 24th 2018, you can try **Ghost version 2** here:<br>
-https://play-with-ghost.com/ghost-themes/firepress-vapor-for-barbershops/
+In short, you can try Ghost on the spot without having to sign-up!
 
+[![play-with-ghost-splash](https://user-images.githubusercontent.com/6694151/50162402-419dc580-02ac-11e9-92b7-f75f8f2c08e1.jpg)](https://play-with-ghost.com/)
+
+
+#### A little video that show you what you can do
+
+[![pwg-video-preview-b](https://user-images.githubusercontent.com/6694151/50162583-bc66e080-02ac-11e9-937f-741f6d388d40.jpg)](https://play-with-ghost.com/#video)
 
 ## How to use this image
 
@@ -34,13 +39,13 @@ Ensure you have Docker installed on your server. To update your Ghost container,
 **Option #2**:
 
 ```
-GHOSTFIRE_IMG="devmtl/ghostfire:1.24.8-583cc3f"
+GHOSTFIRE_IMG="devmtl/ghostfire:2.8.0-fa4877b"
 
 docker run -d \
 —name ghostblog \
 -p 2368:2368 \
 -e url=http://localhost:2368 -e NODE_ENV=production \
-"$GHOSTFIRE_IMG"
+${GHOSTFIRE_IMG}
 ```
 
 **Option #3 (Stateful)**
@@ -48,14 +53,14 @@ docker run -d \
 Don’t forget to change the path on your local drive!
 
 ```
-GHOSTFIRE_IMG="devmtl/ghostfire:1.24.8-583cc3f"
+GHOSTFIRE_IMG="devmtl/ghostfire:2.8.0-fa4877b"
 
 docker run -d \
 —name ghostblog \
 -p 2368:2368 \
 -e url=http://localhost:2368 -e NODE_ENV=production \
 -v /myuser/local-path/ghost/content:/var/lib/ghost/content \
-"$GHOSTFIRE_IMG"
+${GHOSTFIRE_IMG}
 ```
 
 ### Find the most recent docker image 🐳
@@ -70,30 +75,31 @@ As an example:
 ### master branch (stable) tags looks like:
 
 ```
-devmtl/ghostfire:1.24.8-583cc3f-20180713_01H3604
-devmtl/ghostfire:1.24.8-583cc3f
-devmtl/ghostfire:1.22.8
-devmtl/ghostfire:20180713_01H3604
+IMAGE_SHA_SHORT=devmtl/ghostfire:2.8.0-fa4877b
+IMAGE_DATE=devmtl/ghostfire:20181211_15H4408
+IMAGE_VERSION=devmtl/ghostfire:2.8.0
+IMAGE_FULL=devmtl/ghostfire:2.8.0-fa4877b-20181211_15H4408
 ```
 
-I recommend to use the **stable tag**, where:
-- `1.24.8-583cc3f-20180713_01H3604` is the **Ghost version** + the **SHA** of the git commit + the **date**.
-- The logic is that I can use a **specific** image to test and push it in PROD as needed. In this example, only using `devmtl/ghostfire:1.24.8` could turn out to be a broken docker image and is not the best practice. 
-
+I recommend to follow the tag $IMAGE_VERSION
 
 ### edge branch tags looks like:
 
 ```
-devmtl/ghostfire:1.24.8-edge-79fa76a
-devmtl/ghostfire:edge
+IMAGE_SHA_SHORT=devmtl/ghostfire:2.9.0-edge-f44b15e
+IMAGE_DATE=devmtl/ghostfire:2.9.0-edge-20181217_18H5249
+IMAGE_VERSION=devmtl/ghostfire:2.9.0-edge
+IMAGE_EDGE=devmtl/ghostfire:edge
 ```
 
 
 ### edge vs. master branches
 
-Because I run a lot of websites in production using this image, I prefer to do my tests using a dedicated `edge` branch.
+⚠️ Warning - I don’t merge edge into master! Those two branches are like two independant project.
 
-Once I confirm the edge build PASS, I update the Dockerfile under the `master` branch as well. At this point, I’m reaaaaaally confident the docker image is working correctly.
+Because I run a lot of websites in production using this image, I prefer to do my UAT (tests) using a dedicated `edge` branch.
+
+Once I confirm the edge build PASS, I update the Dockerfile in the `master` branch as well. At this point, I’m reaaaaaally confident the docker image is working correctly.
 
 ![ghostfire-screen-2018-07-12_21h46](https://user-images.githubusercontent.com/6694151/42668147-195cfb74-861d-11e8-9d61-d847da6147f9.jpg)
 
