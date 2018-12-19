@@ -47,7 +47,8 @@ In short, you can try Ghost on the spot without having to sign-up!
 
 <br>
 
-[![pwg-video-preview-c](https://user-images.githubusercontent.com/6694151/50163926-75c6b580-02af-11e9-9e99-534200047cc7.jpg)](https://play-with-ghost.com/)
+[![pwg-video-preview-e](https://user-images.githubusercontent.com/6694151/50233512-9bbc8a80-0381-11e9-83bb-f29a67000378.jpg)
+](https://play-with-ghost.com/)
 
 <br>
 
