@@ -50,7 +50,6 @@ before_script:
   - CONTAINER_NAME="ghostuat"
   - DOCKER_USERNAME="devmtl"
   - DOCKER_REPO_NAME="ghostfire"
-  - DOCKER_REPO_PREFIX="ghostfire"
 
   - THIS_DATE=$(date +%Y-%m-%d)
   - THIS_SHA_SHORT=$(git rev-parse --short HEAD)
@@ -92,8 +91,14 @@ after_script:
 
 # docker build -t "$IMAGE_SHA_SHORT" (already built)
 after_success:  
-  - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$DOCKER_REPO_PREFIX" != "" ] && [ "$DOCKER_REPO_NAME" != "" ] && [ "$DOCKER_USERNAME" != "" ] && [ "$DOCKER_PASSWORD" != "" ]; then
-      echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+  - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$DOCKER_REPO_NAME" != "" ] && [ "$DOCKER_USERNAME" != "" ] && [ "$DOCKER_PASSWORD" != "" ]; then
+      echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin;
     
-      docker push "$IMAGE_SHA_SHORT" && docker build -t "$IMAGE_VERSION" . && docker push "$IMAGE_VERSION" && docker build -t "$IMAGE_STABLE" . && docker push "$IMAGE_STABLE"
+      docker push "$IMAGE_SHA_SHORT";
+      
+      docker build -t "$IMAGE_VERSION" . ;
+      docker push "$IMAGE_VERSION";
+      
+      docker build -t "$IMAGE_STABLE" .;
+      docker push "$IMAGE_STABLE";
     fi
