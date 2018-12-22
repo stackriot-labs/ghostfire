@@ -115,10 +115,9 @@ ${GHOSTFIRE_IMG}
 ### master branch (stable) tags:
 
 ```
-IMAGE_SHA_SHORT=devmtl/ghostfire:2.8.0-fa4877b
-IMAGE_DATE=devmtl/ghostfire:20181211_15H4408
-IMAGE_VERSION=devmtl/ghostfire:2.8.0
-IMAGE_FULL=devmtl/ghostfire:2.8.0-fa4877b-20181211_15H4408
+IMAGE_SHA_SHORT=devmtl/ghostfire:2.9.1-e04b5c6
+IMAGE_VERSION=devmtl/ghostfire:2.9.1
+IMAGE_STABLE=devmtl/ghostfire:stable
 ```
 
 I recommend following the tag \$IMAGE_VERSION
@@ -136,13 +135,13 @@ IMAGE_EDGE=devmtl/ghostfire:edge
 
 ### Edge VS Master
 
-⚠️ Workflow warning. You would expect that we merge `edge` into `master`. We don’t do this. Think of it as two independent projects. The main reason is that **the .travis.yml are not the same in those two branches**.
+⚠️ Workflow warning. You would expect that we merge `edge` into `master`. We don’t do this. Think of it as two independent projects. The main reason for this is the fact that **the two .travis.yml files don’t push the same docker images** (stable VS edge).
 
 Let’s understand our process.
 
-Because we run a lot of websites in production using this image, we prefer to do UAT (tests) using a dedicated `edge` branch. **It’s a manual checkpoint that help us avoiding a crashing websites at scale.**. It also has the advantage to keep a clean commit history (without doing git-fu all the time).
+Because we run a lot of websites in production using this image, we prefer to do UAT (tests) using a dedicated `edge` branch. Few sites (a cohort of all site we manage) deploy automatically every update on edge. **It’s a manual checkpoint that helps us avoiding crashing websites at scale**. It also has the advantage to keep a clean commit history (without doing git-fu all the time).
 
-Once we confirm the edge build is a PASS, we update the Dockerfile in `master` branch as well. At this point, we are entirely confident the docker image is working correctly.
+Once we confirm the edge build is a PASS, we update the Dockerfile in `master` branch as well. At this point, we are entirely confident the docker image is working correctly and deploy every site we manage.
 
 
 ## Developing Ghost themes locally
