@@ -65,23 +65,24 @@ We tweaked a few elements like:
 - Easier to read Dockerfile with a cleaner envvar display
 - Uninstall the `ghost cli` to save some space in the final docker image
 - Added `curl` to do healthcheck
-- In the future, we plan to use a multi-stage build to slim down the image
+
+In the future, we plan to use a multi-stage build to slim down the image
 
 
 ## How to use this image
 
-**Requirement**: Ensure you have Docker installed on your machine.
+**Requirement**: Ensure you have Docker installed on your machine. ([MAC OS X](https://hub.docker.com/editions/community/docker-ce-desktop-mac))
 
-To run Ghost in a Docker container, here is the setup we use in production. Just execute `runup.sh` bash script and you are good to go. This setup also allows you to run your blog under a subdirectory like `mysite.com/blog`.
+To run Ghost in a Docker container, here is the setup we use in production. Just execute `runup.sh` bash script and you are good to go.
 
 **Option #1** _(prefered)_:
 
-- Run the script: `./runup.sh`
+- Run the script by typing: `./runup.sh`
 
 **Option #2**:
 
 ```
-GHOSTFIRE_IMG="devmtl/ghostfire:2.8.0-fa4877b"
+GHOSTFIRE_IMG="devmtl/ghostfire:stable"
 
 docker run -d \
 —name ghostblog \
@@ -92,45 +93,44 @@ ${GHOSTFIRE_IMG}
 
 **Option #3 (Stateful)**
 
-Don’t forget to change the path on your local drive!
+⚠️ warning — change the path `/myuser/localpath/ghost/content` and use the latest stable docker image.
 
 ```
-GHOSTFIRE_IMG="devmtl/ghostfire:2.8.0-fa4877b"
+GHOSTFIRE_IMG="devmtl/ghostfire:stable"
 
 docker run -d \
 —name ghostblog \
 -p 2368:2368 \
 -e url=http://localhost:2368 -e NODE_ENV=production \
--v /myuser/local-path/ghost/content:/var/lib/ghost/content \
+-v /myuser/localpath/ghost/content:/var/lib/ghost/content \
 ${GHOSTFIRE_IMG}
 ```
 
 
-### Find the most recent docker image 🐳
+### master branch (stable) tags 🐳
+
+I recommend using the tag from this format: $IMAGE_SHA_SHORT
+
+```
+devmtl/ghostfire:2.9.1-99814a4
+devmtl/ghostfire:2.9.1
+devmtl/ghostfire:stable
+```
+
+
+### edge branch (not stable) tags 🐳
+
+```
+devmtl/ghostfire:edge-2.9.1-7d64db0
+devmtl/ghostfire:edge-2.9.1
+devmtl/ghostfire:edge
+```
+
+
+### Latest docker images 🐳
 
 - **Docker hub** — https://hub.docker.com/r/devmtl/ghostfire/tags/
 - **Travis** — https://travis-ci.org/firepress-org/ghostfire
-
-
-### master branch (stable) tags:
-
-```
-IMAGE_SHA_SHORT=devmtl/ghostfire:2.9.1-e04b5c6
-IMAGE_VERSION=devmtl/ghostfire:2.9.1
-IMAGE_STABLE=devmtl/ghostfire:stable
-```
-
-I recommend following the tag \$IMAGE_VERSION
-
-
-### edge branch (not stable) tags:
-
-```
-IMAGE_SHA_SHORT=devmtl/ghostfire:2.9.0-edge-c545f37
-IMAGE_DATE=devmtl/ghostfire:2.9.0-edge-20181218_15H2357
-IMAGE_VERSION=devmtl/ghostfire:2.9.0-edge
-IMAGE_EDGE=devmtl/ghostfire:edge
-```
 
 
 ### Edge VS Master

@@ -11,7 +11,7 @@ set -o nounset
 ###############################################################################
 
 # --- VARS | Find the most recent Docker image here: https://hub.docker.com/r/devmtl/ghostfire/tags/
-GHOSTFIRE_IMG="devmtl/ghostfire:2.8.0-fa4877b"
+GHOSTFIRE_IMG="devmtl/ghostfire:stable"
 CTN_NAME="ghostUAT"
 WAIT_TIMER="3600"
 
@@ -68,4 +68,4 @@ docker rm -f "$CTN_NAME";
 
 # UAT (User Acceptance Testing)
 # Easy to copy paste in your terminal
-# Pascal Andy https://pascalandy.com/blog/now/ | 2018-08-24_10h37
+# Pascal Andy https://pascalandy.com/blog/now/ | 2018-12-22_14h35
