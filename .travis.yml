@@ -85,18 +85,11 @@ after_script:
   - docker exec -it "$CONTAINER_NAME" cat /var/lib/ghost/current/package.json | grep version;
   - docker exec -it "$CONTAINER_NAME" curl -Is --head "http://localhost:2368" | grep -F -o "HTTP/1.1 200 OK" || echo "Error --> http://localhost:2368"
   - docker rm -f "$CONTAINER_NAME";
-
   # Show all available tags (easy copy-paste style)
   - echo && echo "GHOST_VERSION_DOCKERFILE=$GHOST_VERSION_DOCKERFILE" && echo "GHOST_LATEST_RELEASE=$GHOST_LATEST_RELEASE" && echo "GHOST_CLI_LATEST_RELEASE=$GHOST_CLI_LATEST_RELEASE" && echo "GHOST_VERSION=$GHOST_VERSION" && echo && echo "IMAGE_SHA_SHORT=$IMAGE_SHA_SHORT" && echo "IMAGE_VERSION=$IMAGE_VERSION" && echo "IMAGE_STABLE=$IMAGE_STABLE" && echo && echo "#IMAGE_SHA_SHORT=$IMAGE_SHA_SHORT" && echo "#IMAGE_VERSION=$IMAGE_VERSION" && echo "#IMAGE_STABLE=$IMAGE_STABLE" && echo;
 
 # docker build -t "$IMAGE_SHA_SHORT" (already built)
-#
-# Flag output examples:
-# IMAGE_SHA_SHORT=devmtl/ghostfire:2.9.1-e04b5c6
-# IMAGE_VERSION=devmtl/ghostfire:2.9.1
-# IMAGE_STABLE=devmtl/ghostfire:stable
-
-after_success:  
+after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$DOCKER_REPO_NAME" != "" ] && [ "$DOCKER_USERNAME" != "" ] && [ "$DOCKER_PASSWORD" != "" ]; then
       echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin;
     
@@ -108,3 +101,8 @@ after_success:
       docker build -t "$IMAGE_STABLE" .;
       docker push "$IMAGE_STABLE";
     fi
+
+# Flag output examples:
+# IMAGE_SHA_SHORT=devmtl/ghostfire:2.9.1-e04b5c6
+# IMAGE_VERSION=devmtl/ghostfire:2.9.1
+# IMAGE_STABLE=devmtl/ghostfire:stable
