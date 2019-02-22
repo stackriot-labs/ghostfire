@@ -2,6 +2,9 @@
 # Set this env_var before running this script:
 #GITHUB_TOKEN="3122133122133211233211233211233211322313123"
 #
+# You can bypass this, it's specific to my set up
+source .env .
+#
 # The tag must be ready to push on git remote
 #
 my_repo="ghostfire"
