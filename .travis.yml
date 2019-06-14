@@ -48,9 +48,9 @@ before_install:
   - docker --version
 # install Trivy Vulnerability Scanner 
   - export TRIVY_VERSION=$(curl --silent "https://api.github.com/repos/knqyf263/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
-  - wget https://github.com/knqyf263/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz && tar zxvf trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
+  - wget --retry-connrefused --waitretry=1 --read-timeout=5 --timeout=5 --tries=10 https://github.com/knqyf263/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz && tar zxvf trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
 # install microscanner Aquasec Scanner
-  - wget https://raw.githubusercontent.com/lukebond/microscanner-wrapper/master/scan.sh && chmod +x scan.sh
+  - wget --retry-connrefused --waitretry=1 --read-timeout=5 --timeout=5 --tries=10 https://raw.githubusercontent.com/lukebond/microscanner-wrapper/master/scan.sh && chmod +x scan.sh
 
 install:
 - git clone https://github.com/docker-library/official-images.git ~/official-images
@@ -93,7 +93,7 @@ script:
   - docker run -d --name ${CONTAINER_NAME} -p 2368:2368 -e url=http://localhost:2368 -e NODE_ENV=production ${IMAGE_SHA_SHORT}
   - echo & echo && echo "Ensure ${CONTAINER_NAME} is starting ==========>"
   - until $(curl --output /dev/null --silent --head --fail http://localhost:2368); do
-      echo "Waiting for ${CONTAINER_NAME} container to run...";
+      echo & echo && echo "Waiting for ${CONTAINER_NAME} container to run  ==========>";
       sleep 3;
     done
   - curl http://localhost:2368 | grep "The professional publishing platform"
@@ -117,10 +117,10 @@ after_script:
   - docker exec -it ${CONTAINER_NAME} cat /var/lib/ghost/current/package.json | grep version;
   - docker exec -it ${CONTAINER_NAME} curl -Is --head "http://localhost:2368" | grep -F -o "HTTP/1.1 200 OK" || echo "Error --> http://localhost:2368";
   - docker rm -f ${CONTAINER_NAME};
-  - echo && echo GHOST_VERSION_DOCKERFILE=${GHOST_VERSION_DOCKERFILE} && echo GHOST_LATEST_RELEASE=${GHOST_LATEST_RELEASE} && echo GHOST_CLI_LATEST_RELEASE=${GHOST_CLI_LATEST_RELEASE} && echo GHOST_VERSION=${GHOST_VERSION} && echo && echo IMAGE_SHA_SHORT=${IMAGE_SHA_SHORT} && echo IMAGE_VERSION=${IMAGE_VERSION} && echo IMAGE_STABLE=${IMAGE_STABLE} && echo && echo "#IMAGE_SHA_SHORT=$IMAGE_SHA_SHORT" && echo "#IMAGE_VERSION=$IMAGE_VERSION" && echo "#IMAGE_STABLE=$IMAGE_STABLE" && echo;
+  - echo & echo && echo GHOST_VERSION_DOCKERFILE=${GHOST_VERSION_DOCKERFILE} && echo GHOST_LATEST_RELEASE=${GHOST_LATEST_RELEASE} && echo GHOST_CLI_LATEST_RELEASE=${GHOST_CLI_LATEST_RELEASE} && echo GHOST_VERSION=${GHOST_VERSION} && echo && echo IMAGE_SHA_SHORT=${IMAGE_SHA_SHORT} && echo IMAGE_VERSION=${IMAGE_VERSION} && echo IMAGE_STABLE=${IMAGE_STABLE} && echo && echo "#IMAGE_SHA_SHORT=${IMAGE_SHA_SHORT}" && echo "#IMAGE_VERSION=${IMAGE_VERSION}" && echo "#IMAGE_STABLE=${IMAGE_STABLE}" && echo;
 
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$DOCKER_REPO_NAME" != "" ] && [ "$DOCKER_USERNAME" != "" ] && [ "$DOCKER_PASSWORD" != "" ]; then
+  - if [ ${TRAVIS_BRANCH} == "master" ] && [ ${DOCKER_REPO_NAME} != "" ] && [ ${DOCKER_USERNAME} != "" ] && [ ${DOCKER_PASSWORD} != "" ]; then
 
       docker push ${IMAGE_SHA_SHORT};
 
