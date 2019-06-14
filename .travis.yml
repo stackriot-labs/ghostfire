@@ -33,16 +33,25 @@ branches:
   - master
   - edge
 
-before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
-  - sudo apt-get install -qqy openssl parallel
-  - docker --version
-
 addons:
   apt:
     packages:
-      - docker-ce
+
+cache:
+  directories:
+    - $HOME/.cache/trivy
+
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+  - sudo apt-get install --no-install-recommends -qqy openssl parallel
+  - docker --version
+# install Trivy Vulnerability Scanner 
+  - export VERSION=$(curl --silent "https://api.github.com/repos/knqyf263/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+  - wget https://github.com/knqyf263/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-64bit.tar.gz
+  - tar zxvf trivy_${VERSION}_Linux-64bit.tar.gz
+# install microscanner Aquasec Scanner
+  - wget https://raw.githubusercontent.com/lukebond/microscanner-wrapper/master/scan.sh
 
 install:
 - git clone https://github.com/docker-library/official-images.git ~/official-images
@@ -80,9 +89,9 @@ before_script:
 
 script:
   - uname -a && echo & echo && echo "BUILD OUR DOCKERFILE FROM HERE ==========>"
-  - docker build --build-arg=MICROSCANNER_TOKEN=${MICROSCANNER_TOKEN} -t "$IMAGE_SHA_SHORT" .
+  - docker build --build-arg=MICROSCANNER_TOKEN=${MICROSCANNER_TOKEN} -t ${IMAGE_SHA_SHORT} .
 
-  - docker run -d --name "$CONTAINER_NAME" -p 2368:2368 -e url=http://localhost:2368 -e NODE_ENV=production "$IMAGE_SHA_SHORT"
+  - docker run -d --name "$CONTAINER_NAME" -p 2368:2368 -e url=http://localhost:2368 -e NODE_ENV=production ${IMAGE_SHA_SHORT}
   - echo & echo && echo "Ensure $CONTAINER_NAME is starting ==========>"
   - until $(curl --output /dev/null --silent --head --fail http://localhost:2368); do
       echo "Waiting for $CONTAINER_NAME container to run...";
@@ -91,7 +100,12 @@ script:
   - curl http://localhost:2368 | grep "The professional publishing platform"
 
   - echo & echo && echo "Starting official docker unit test on the image ==========>"
-  - ~/official-images/test/run.sh "$IMAGE_SHA_SHORT"
+  - ~/official-images/test/run.sh ${IMAGE_SHA_SHORT}
+# Execute Trivy Vulnerability Scanner
+  - ./trivy --exit-code 0 --severity HIGH --quiet --auto-refresh ${IMAGE_SHA_SHORT}
+  - ./trivy --exit-code 0 --severity CRITICAL --quiet --auto-refresh ${IMAGE_SHA_SHORT}
+# Execute microscanner Aquasec Scanner
+  - MICROSCANNER_TOKEN=${MICROSCANNER_TOKEN} ./scan.sh ${IMAGE_SHA_SHORT}
 
 after_script:
   - docker inspect "$CONTAINER_NAME";
@@ -109,12 +123,12 @@ after_script:
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$DOCKER_REPO_NAME" != "" ] && [ "$DOCKER_USERNAME" != "" ] && [ "$DOCKER_PASSWORD" != "" ]; then
 
-      docker push "$IMAGE_SHA_SHORT";
+      docker push ${IMAGE_SHA_SHORT};
 
-      docker build --build-arg=MICROSCANNER_TOKEN=${MICROSCANNER_TOKEN} -t "$IMAGE_VERSION" . ;
+      docker build --build-arg=MICROSCANNER_TOKEN=${MICROSCANNER_TOKEN} -t ${IMAGE_VERSION} . ;
       docker push "$IMAGE_VERSION";
 
-      docker build --build-arg=MICROSCANNER_TOKEN=${MICROSCANNER_TOKEN} -t "$IMAGE_STABLE" .;
+      docker build --build-arg=MICROSCANNER_TOKEN=${MICROSCANNER_TOKEN} -t ${IMAGE_STABLE} .;
       docker push "$IMAGE_STABLE";
 
       docker build --build-arg=MICROSCANNER_TOKEN=${MICROSCANNER_TOKEN} -t ${IMAGE_NODE_COMPRESS} --target node-compress . ;
