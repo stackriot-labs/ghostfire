@@ -73,10 +73,10 @@ before_script:
   - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin;
 
 # download these layers to make our build faster
-  - docker pull "${IMAGE_NODE_COMPRESS}";
-  - docker pull "${IMAGE_NODE_CORE}";
-  - docker pull "${IMAGE_GHOST_BASE}";
-  - docker pull "${IMAGE_EDGE}";
+  - docker pull "${IMAGE_NODE_COMPRESS}" || true;
+  - docker pull "${IMAGE_NODE_CORE}" || true;
+  - docker pull "${IMAGE_GHOST_BASE}" || true;
+  - docker pull "${IMAGE_EDGE}" || true;
 
 script:
   - uname -a && echo & echo && echo "BUILD OUR DOCKERFILE FROM HERE ==========>"
