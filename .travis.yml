@@ -48,7 +48,7 @@ before_install:
   - docker --version
 # install Trivy Vulnerability Scanner 
   - export TRIVY_VERSION=$(curl --silent "https://api.github.com/repos/knqyf263/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/') && echo ${TRIVY_VERSION}
-  - wget --retry-connrefused --waitretry=1 --read-timeout=5 --timeout=5 --tries=10 https://github.com/knqyf263/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz && tar zxvf trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz
+  - wget --retry-connrefused --waitretry=1 --read-timeout=5 --timeout=5 --tries=10 https://github.com/knqyf263/trivy/releases/download/v$TRIVY_VERSION/trivy_$TRIVY_VERSION_Linux-64bit.tar.gz && tar zxvf trivy_$TRIVY_VERSION_Linux-64bit.tar.gz
 # install microscanner Aquasec Scanner
   - wget --retry-connrefused --waitretry=1 --read-timeout=5 --timeout=5 --tries=10 https://raw.githubusercontent.com/lukebond/microscanner-wrapper/master/scan.sh && chmod +x scan.sh
 
