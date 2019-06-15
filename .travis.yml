@@ -101,8 +101,8 @@ script:
   - echo & echo && echo "Starting official docker unit test on the image ==========>"
   - ~/official-images/test/run.sh ${IMAGE_SHA_SHORT}
 # Execute Trivy Vulnerability Scanner
-  - ./trivy --exit-code 0 --severity HIGH --quiet --auto-refresh ${IMAGE_SHA_SHORT}
-  - ./trivy --exit-code 0 --severity CRITICAL --quiet --auto-refresh ${IMAGE_SHA_SHORT}
+#  - ./trivy --exit-code 0 --severity HIGH --quiet --auto-refresh ${IMAGE_SHA_SHORT}
+#  - ./trivy --exit-code 0 --severity CRITICAL --quiet --auto-refresh ${IMAGE_SHA_SHORT}
 # Execute microscanner Aquasec Scanner
   - MICROSCANNER_TOKEN=${MICROSCANNER_TOKEN} ./scan.sh ${IMAGE_SHA_SHORT}
 
