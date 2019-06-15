@@ -45,7 +45,6 @@ before_install:
   - sudo apt-get -qq update
   - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
   - sudo apt-get install --no-install-recommends -qqy openssl parallel ca-certificates
-  - export DOCKER_BUILDKIT=1
   - docker --version
 # install Trivy Vulnerability Scanner
   - export TRIVY_VERSION=$(curl --silent "https://api.github.com/repos/knqyf263/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
