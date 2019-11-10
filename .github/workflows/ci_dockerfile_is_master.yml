@@ -171,9 +171,8 @@ jobs:
           wget --retry-connrefused --waitretry=1 --read-timeout=5 --timeout=5 --tries=10 https://raw.githubusercontent.com/lukebond/microscanner-wrapper/master/scan.sh && chmod +x scan.sh
           #
           echo "Takes in average 4 min to complete"
-          echo "The build will stop only if it finds a critical issue"
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest \
-            -q --exit-code 1 --severity CRITICAL $(cat TAG_LATEST)
+            -q --continue-on-failure $(cat TAG_LATEST)
 
       #- name: Github Actions ideas to implements
       #  run: |
